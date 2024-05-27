@@ -1,7 +1,15 @@
-export APP_BITCOIN_IP="10.21.22.2"
-export APP_BITCOIN_NODE_IP="10.21.21.8"
-export APP_BITCOIN_TOR_PROXY_IP="10.21.22.10"
-export APP_BITCOIN_I2P_DAEMON_IP="10.21.22.11"
+export DEVICE_DOMAIN_NAME="orangeos"
+export EXPORTS_APP_DIR="./"
+export APP_DATA_DIR="${EXPORTS_APP_DIR}/data"
+export APP_BITCOIN_DATA_DIR="${APP_DATA_DIR}/bitcoin"
+export TOR_DATA_DIR="${EXPORTS_APP_DIR}/data/tor"
+docker network create --gateway 10.42.0.1 --subnet 10.42.0.0/16 bitcoin_local_network
+export NETWORK_IP="10.42.0.0/16"
+export APP_GATEWAY_IP="10.42.0.1"
+export APP_BITCOIN_IP="10.42.0.2"
+export APP_BITCOIN_NODE_IP="10.42.0.8"
+export APP_BITCOIN_TOR_PROXY_IP="10.42.0.10"
+export APP_BITCOIN_I2P_DAEMON_IP="10.42.0.11"
 
 export APP_BITCOIN_DATA_DIR="${EXPORTS_APP_DIR}/data/bitcoin"
 export APP_BITCOIN_RPC_PORT="8332"
@@ -98,7 +106,7 @@ BIN_ARGS+=( "-port=8333" )
 BIN_ARGS+=( "-rpcport=8332" )
 BIN_ARGS+=( "-rpcbind=${APP_BITCOIN_NODE_IP}" )
 BIN_ARGS+=( "-rpcbind=127.0.0.1" )
-BIN_ARGS+=( "-rpcallowip=${NETWORK_IP}/16" )
+#BIN_ARGS+=( "-rpcallowip=${NETWORK_IP}/16" )
 BIN_ARGS+=( "-rpcallowip=127.0.0.1" )
 BIN_ARGS+=( "-rpcauth=\"${APP_BITCOIN_RPC_AUTH}\"" )
 BIN_ARGS+=( "-zmqpubrawblock=tcp://0.0.0.0:${APP_BITCOIN_ZMQ_RAWBLOCK_PORT}" )

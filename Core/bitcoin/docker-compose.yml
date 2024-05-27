@@ -1,5 +1,10 @@
-version: "3.7"
-
+networks:
+    bitcoin_local_network:
+      ipam:
+          driver: default
+          config:
+              - subnet: "${NETWORK_IP}"
+                gateway: "${APP_GATEWAY_IP}"
 services:
   server:
     image: getumbrel/umbrel-bitcoin:v0.7.0@sha256:f2bb98c962fbad13991ceeda1308bbfaca13cc7cd5cb7d6b2e0d1d06e6123072
@@ -30,8 +35,11 @@ services:
       TOR_PROXY_CONTROL_PASSWORD: "moneyprintergobrrr"
       I2P_DAEMON_IP: "${APP_BITCOIN_I2P_DAEMON_IP}"
       I2P_DAEMON_PORT: "7656"
+      DEBUG: "true"
+    ports:
+      - 3005:3005  
     networks:
-      default:
+      bitcoin_local_network:
         ipv4_address: $APP_BITCOIN_IP
 
   bitcoind:
@@ -45,7 +53,7 @@ services:
       - "${APP_BITCOIN_P2P_PORT}:${APP_BITCOIN_P2P_PORT}"
       - "${APP_BITCOIN_RPC_PORT}:${APP_BITCOIN_RPC_PORT}"
     networks:
-      default:
+      bitcoin_local_network:
         ipv4_address: $APP_BITCOIN_NODE_IP
 
   tor:
@@ -58,7 +66,7 @@ services:
     environment:
       HOME: "/tmp"
     networks:
-      default:
+      bitcoin_local_network:
         ipv4_address: "${APP_BITCOIN_TOR_PROXY_IP}"
   
   i2pd_daemon:
@@ -69,5 +77,5 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/i2pd:/home/i2pd/data
     networks:
-      default:
+      bitcoin_local_network:
         ipv4_address: "${APP_BITCOIN_I2P_DAEMON_IP}"
